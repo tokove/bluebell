@@ -3,6 +3,7 @@ package mysql
 import (
 	"bluebell_backend/settings"
 	"fmt"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
@@ -17,9 +18,10 @@ func Init(cfg *settings.MySQLConfig) (err error) {
 	db, err = sqlx.Connect("mysql", dsn)
 	if err != nil {
 		return
-	}
+	} 
 	db.SetMaxOpenConns(cfg.MaxOpenConns)
 	db.SetMaxIdleConns(cfg.MaxIdleConns)
+	db.SetConnMaxLifetime(time.Hour)
 	return
 }
 
