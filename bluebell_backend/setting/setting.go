@@ -1,4 +1,4 @@
-package settings
+package setting
 
 import (
 	"fmt"
@@ -50,7 +50,7 @@ type LogConfig struct {
 
 func Init() error {
 	viper.SetConfigFile("./config/config.yaml")
-	
+
 	err := viper.ReadInConfig()
 	if err != nil {
 		panic(fmt.Errorf("ReadInConfig failed, err: %v", err))
@@ -59,7 +59,7 @@ func Init() error {
 	if err := viper.Unmarshal(&Conf); err != nil {
 		panic(fmt.Errorf("unmarshal to Conf failed, err:%v", err))
 	}
-	
+
 	viper.WatchConfig()
 	viper.OnConfigChange(func(in fsnotify.Event) {
 		fmt.Println("夭寿啦~配置文件被人修改啦...")
