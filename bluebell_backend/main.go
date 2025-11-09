@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bluebell_backend/controller"
 	"bluebell_backend/dao/mysql"
 	"bluebell_backend/dao/redis"
 	"bluebell_backend/logger"
@@ -43,6 +44,12 @@ func main() {
 	// 雪花算法
 	if err := snowflake.Init(setting.Conf.StartTime, setting.Conf.MachineID); err != nil {
 		fmt.Printf("init snowflake failed, err:%v\n", err)
+		return
+	}
+
+	// 初始化gin用的校验器的翻译器
+	if err := controller.InitTrans("zh"); err != nil {
+		fmt.Printf("init validator trans failed, err:%v\n", err)
 		return
 	}
 
