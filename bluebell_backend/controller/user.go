@@ -2,8 +2,9 @@ package controller
 
 import (
 	"bluebell_backend/model"
+	"bluebell_backend/pkg/errcode"
 	"bluebell_backend/service"
-	"net/http"
+	"errors"
 
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
@@ -17,26 +18,56 @@ func SignUpHandler(c *gin.Context) {
 		zap.L().Error("signup with invalid param", zap.Error(err))
 		errs, ok := err.(validator.ValidationErrors)
 		if !ok {
-			c.JSON(http.StatusOK, gin.H{
-				"msg": err.Error(),
-			})
+			ResponseError(c, CodeInvalidParam)
 			return
 		}
-		c.JSON(http.StatusOK, gin.H{
-			"msg": removeTopStruct(errs.Translate(trans)),
-		})
+		ResponseErrorWithMsg(c, CodeInvalidParam, removeTopStruct(errs.Translate(trans)))
 		return
 	}
 
 	// 2.业务处理
 	if err := service.SignUp(p); err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"msg": "注册失败",
-		})
+		zap.L().Error("service.SignUp failed", zap.Error(err))
+		if errors.Is(err, errcode.ErrorUserExist) {
+			ResponseError(c, CodeUserExist)
+			return
+		}
+		ResponseError(c, CodeServerBusy)
 		return
 	}
 	// 3.返回响应
-	c.JSON(http.StatusOK, gin.H{
-		"msg": "success",
-	})
+	ResponseSuccess(c, nil)
+}
+
+func LoginHandler(c *gin.Context) {
+	p := new(model.ParamLogin)
+	if err := c.ShouldBindJSON(p); err != nil {
+		zap.L().Error("login with invalid param", zap.Error(err))
+		errs, ok := err.(validator.ValidationErrors)
+		if !ok {
+			ResponseError(c, CodeInvalidParam)
+			return
+		}
+		ResponseErrorWithMsg(c, CodeInvalidParam, removeTopStruct(errs.Translate(trans)))
+		return
+	}
+
+	user := &model.User{
+		Username: p.Username,
+		Password: p.Password,
+	}
+	if err := service.Login(user); err != nil {
+		zap.L().Error("service.Login failed", zap.String("username", p.Username), zap.Error(err))
+		if errors.Is(err, errcode.ErrorUserNotExist) {
+			ResponseError(c, CodeUserNotExist)
+			return
+		}
+		if errors.Is(err, errcode.ErrorInvalidPassword) {
+			ResponseError(c, CodeInvalidPassword)
+			return
+		}
+		ResponseError(c, CodeServerBusy)
+		return
+	}
+	ResponseSuccess(c, nil)
 }

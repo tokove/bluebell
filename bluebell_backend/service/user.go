@@ -3,6 +3,7 @@ package service
 import (
 	"bluebell_backend/dao/mysql"
 	"bluebell_backend/model"
+	"bluebell_backend/pkg/errcode"
 	"bluebell_backend/pkg/snowflake"
 	"bluebell_backend/pkg/utils"
 )
@@ -29,4 +30,17 @@ func SignUp(p *model.ParamSignUp) (err error) {
 	}
 	// 保存进数据库
 	return mysql.InsertUser(user)
+}
+
+func Login(user *model.User) error {
+	// 查询用户密码
+	hashedPassword, err := mysql.GetHashedPasswordByUsername(user.Username)
+	if err != nil {
+		return err
+	}
+	// 比对密码
+	if err := utils.CheckPassword(hashedPassword, user.Password); err != nil {
+		return errcode.ErrorInvalidPassword
+	}
+	return nil
 }

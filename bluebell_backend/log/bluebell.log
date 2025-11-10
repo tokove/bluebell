@@ -34,3 +34,24 @@
 {"level":"ERROR","time":"2025-11-09T23:34:43.316+0800","caller":"controller/user.go:17","msg":"signup with invalid param","error":"Key: 'ParamSignUp.confirm_password' Error:Field validation for 'confirm_password' failed on the 'eqfield' tag"}
 {"level":"INFO","time":"2025-11-09T23:34:43.316+0800","caller":"logger/logger.go:77","msg":"/signup","status":200,"method":"POST","path":"/signup","query":"","ip":"::1","user-agent":"PostmanRuntime/7.49.1","errors":"","cost":0}
 {"level":"INFO","time":"2025-11-09T23:34:52.739+0800","caller":"logger/logger.go:77","msg":"/signup","status":200,"method":"POST","path":"/signup","query":"","ip":"::1","user-agent":"PostmanRuntime/7.49.1","errors":"","cost":0.2121969}
+{"level":"INFO","time":"2025-11-10T10:07:51.759+0800","caller":"logger/logger.go:44","msg":"init logger success"}
+{"level":"ERROR","time":"2025-11-10T10:08:24.241+0800","caller":"controller/user.go:17","msg":"signup with invalid param","error":"Key: 'ParamSignUp.confirm_password' Error:Field validation for 'confirm_password' failed on the 'required' tag"}
+{"level":"INFO","time":"2025-11-10T10:08:24.241+0800","caller":"logger/logger.go:77","msg":"/signup","status":200,"method":"POST","path":"/signup","query":"","ip":"::1","user-agent":"PostmanRuntime/7.50.0","errors":"","cost":0.0005079}
+{"level":"INFO","time":"2025-11-10T10:16:13.627+0800","caller":"logger/logger.go:44","msg":"init logger success"}
+{"level":"INFO","time":"2025-11-10T10:17:08.804+0800","caller":"logger/logger.go:44","msg":"init logger success"}
+{"level":"INFO","time":"2025-11-10T10:33:16.828+0800","caller":"logger/logger.go:44","msg":"init logger success"}
+{"level":"INFO","time":"2025-11-10T10:33:34.482+0800","caller":"logger/logger.go:77","msg":"/login","status":200,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"PostmanRuntime/7.50.0","errors":"","cost":0.0502707}
+{"level":"INFO","time":"2025-11-10T10:33:41.075+0800","caller":"logger/logger.go:77","msg":"/login","status":200,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"PostmanRuntime/7.50.0","errors":"","cost":0.046951}
+{"level":"INFO","time":"2025-11-10T11:02:02.913+0800","caller":"logger/logger.go:44","msg":"init logger success"}
+{"level":"ERROR","time":"2025-11-10T11:02:17.908+0800","caller":"controller/user.go:67","msg":"service.Login failed","error":"crypto/bcrypt: hashedPassword is not the hash of the given password"}
+{"level":"INFO","time":"2025-11-10T11:02:17.908+0800","caller":"logger/logger.go:77","msg":"/login","status":200,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"PostmanRuntime/7.50.0","errors":"","cost":0.0501992}
+{"level":"INFO","time":"2025-11-10T11:02:23.212+0800","caller":"logger/logger.go:77","msg":"/login","status":200,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"PostmanRuntime/7.50.0","errors":"","cost":0.0501431}
+{"level":"INFO","time":"2025-11-10T11:02:55.361+0800","caller":"logger/logger.go:77","msg":"/signup","status":200,"method":"POST","path":"/signup","query":"","ip":"::1","user-agent":"PostmanRuntime/7.50.0","errors":"","cost":0.0549322}
+{"level":"ERROR","time":"2025-11-10T11:03:08.449+0800","caller":"controller/user.go:67","msg":"service.Login failed","error":"crypto/bcrypt: hashedPassword is not the hash of the given password"}
+{"level":"INFO","time":"2025-11-10T11:03:08.449+0800","caller":"logger/logger.go:77","msg":"/login","status":200,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"PostmanRuntime/7.50.0","errors":"","cost":0.0491544}
+{"level":"INFO","time":"2025-11-10T11:03:13.233+0800","caller":"logger/logger.go:77","msg":"/login","status":200,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"PostmanRuntime/7.50.0","errors":"","cost":0.0480099}
+{"level":"ERROR","time":"2025-11-10T11:04:47.996+0800","caller":"controller/user.go:48","msg":"login with invalid param","error":"Key: 'ParamLogin.password' Error:Field validation for 'password' failed on the 'required' tag"}
+{"level":"INFO","time":"2025-11-10T11:04:47.996+0800","caller":"logger/logger.go:77","msg":"/login","status":200,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"PostmanRuntime/7.50.0","errors":"","cost":0.0005989}
+{"level":"INFO","time":"2025-11-10T12:45:56.725+0800","caller":"logger/logger.go:44","msg":"init logger success"}
+{"level":"ERROR","time":"2025-11-10T12:46:04.700+0800","caller":"controller/user.go:45","msg":"login with invalid param","error":"Key: 'ParamLogin.password' Error:Field validation for 'password' failed on the 'required' tag"}
+{"level":"INFO","time":"2025-11-10T12:46:04.700+0800","caller":"logger/logger.go:77","msg":"/login","status":200,"method":"POST","path":"/login","query":"","ip":"::1","user-agent":"PostmanRuntime/7.50.0","errors":"","cost":0.0005398}
