@@ -15,10 +15,16 @@ func SetupRouter(mode string) *gin.Engine {
 	r := gin.New()
 	r.Use(logger.GinLogger(), logger.GinRecovery(true))
 
-	r.POST("/register", controller.RegisterHandler)
-	r.POST("/login", controller.LoginHandler)
+	// ---------------------------------------------------------------------------------
+	v1 := r.Group("/api/v1")
+	v1.POST("/register", controller.RegisterHandler)
+	v1.POST("/login", controller.LoginHandler)
 
-	r.POST("/ping", middleware.JWTAuthMiddleware(), controller.LoginHandler)
+	v1.Use(middleware.JWTAuthMiddleware())
+	{
+		v1.GET("/community", controller.CommunityHandler)
+	}
+	// ----------------------------------------------------------------------------------
 	r.NoRoute(func(c *gin.Context) {
 		controller.ResponseErrorWithMsg(c, controller.CodeNotFound, "404")
 	})
