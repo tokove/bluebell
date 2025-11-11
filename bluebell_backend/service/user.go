@@ -4,11 +4,12 @@ import (
 	"bluebell_backend/dao/mysql"
 	"bluebell_backend/model"
 	"bluebell_backend/pkg/errcode"
+	"bluebell_backend/pkg/jwt"
 	"bluebell_backend/pkg/snowflake"
 	"bluebell_backend/pkg/utils"
 )
 
-func SignUp(p *model.ParamSignUp) (err error) {
+func Register(p *model.ParamSignUp) (err error) {
 	// 查询用户是否存在
 	if err := mysql.CheckUserExist(p.Username); err != nil {
 		return err
@@ -32,15 +33,15 @@ func SignUp(p *model.ParamSignUp) (err error) {
 	return mysql.InsertUser(user)
 }
 
-func Login(user *model.User) error {
+func Login(user *model.User) (string, error) {
 	// 查询用户密码
-	hashedPassword, err := mysql.GetHashedPasswordByUsername(user.Username)
+	u, err := mysql.GetUserByUsername(user.Username)
 	if err != nil {
-		return err
+		return "", err
 	}
 	// 比对密码
-	if err := utils.CheckPassword(hashedPassword, user.Password); err != nil {
-		return errcode.ErrorInvalidPassword
+	if err := utils.CheckPassword(u.Password, user.Password); err != nil {
+		return "", errcode.ErrorInvalidPassword
 	}
-	return nil
+	return jwt.GenToken(u.UserID, u.Username)
 }

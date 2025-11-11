@@ -11,7 +11,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func SignUpHandler(c *gin.Context) {
+func RegisterHandler(c *gin.Context) {
 	// 1.获取参数和参数校验
 	p := new(model.ParamSignUp)
 	if err := c.ShouldBindJSON(p); err != nil {
@@ -26,7 +26,7 @@ func SignUpHandler(c *gin.Context) {
 	}
 
 	// 2.业务处理
-	if err := service.SignUp(p); err != nil {
+	if err := service.Register(p); err != nil {
 		zap.L().Error("service.SignUp failed", zap.Error(err))
 		if errors.Is(err, errcode.ErrorUserExist) {
 			ResponseError(c, CodeUserExist)
@@ -56,7 +56,8 @@ func LoginHandler(c *gin.Context) {
 		Username: p.Username,
 		Password: p.Password,
 	}
-	if err := service.Login(user); err != nil {
+	token, err := service.Login(user)
+	if err != nil {
 		zap.L().Error("service.Login failed", zap.String("username", p.Username), zap.Error(err))
 		if errors.Is(err, errcode.ErrorUserNotExist) {
 			ResponseError(c, CodeUserNotExist)
@@ -69,5 +70,5 @@ func LoginHandler(c *gin.Context) {
 		ResponseError(c, CodeServerBusy)
 		return
 	}
-	ResponseSuccess(c, nil)
+	ResponseSuccess(c, token)
 }

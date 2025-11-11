@@ -24,15 +24,15 @@ func InsertUser(user *model.User) error {
 	return err
 }
 
-func GetHashedPasswordByUsername(username string) (string, error) {
-	sqlStr := `select password from user where username = ?`
-	var password string
-	err := db.Get(&password, sqlStr, username)
+func GetUserByUsername(username string) (*model.User, error) {
+	sqlStr := `select user_id, username, password from user where username = ?`
+	user := &model.User{}
+	err := db.Get(user, sqlStr, username)
 	if err == sql.ErrNoRows {
-		return "", errcode.ErrorUserNotExist
+		return nil, errcode.ErrorUserNotExist
 	}
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	return password, nil
+	return user, nil
 }
