@@ -1,8 +1,8 @@
 package controller
 
 import (
+	"bluebell_backend/dao/mysql"
 	"bluebell_backend/model"
-	"bluebell_backend/pkg/errcode"
 	"bluebell_backend/service"
 	"errors"
 
@@ -28,7 +28,7 @@ func RegisterHandler(c *gin.Context) {
 	// 2.业务处理
 	if err := service.Register(p); err != nil {
 		zap.L().Error("service.SignUp failed", zap.Error(err))
-		if errors.Is(err, errcode.ErrorUserExist) {
+		if errors.Is(err, mysql.ErrorUserExist) {
 			ResponseError(c, CodeUserExist)
 			return
 		}
@@ -59,11 +59,11 @@ func LoginHandler(c *gin.Context) {
 	token, err := service.Login(user)
 	if err != nil {
 		zap.L().Error("service.Login failed", zap.String("username", p.Username), zap.Error(err))
-		if errors.Is(err, errcode.ErrorUserNotExist) {
+		if errors.Is(err, mysql.ErrorUserNotExist) {
 			ResponseError(c, CodeUserNotExist)
 			return
 		}
-		if errors.Is(err, errcode.ErrorInvalidPassword) {
+		if errors.Is(err, mysql.ErrorInvalidPassword) {
 			ResponseError(c, CodeInvalidPassword)
 			return
 		}

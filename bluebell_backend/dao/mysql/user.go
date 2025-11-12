@@ -2,7 +2,6 @@ package mysql
 
 import (
 	"bluebell_backend/model"
-	"bluebell_backend/pkg/errcode"
 	"database/sql"
 )
 
@@ -13,7 +12,7 @@ func CheckUserExist(username string) error {
 		return err
 	}
 	if count > 0 {
-		return errcode.ErrorUserExist
+		return ErrorUserExist
 	}
 	return nil
 }
@@ -29,7 +28,7 @@ func GetUserByUsername(username string) (*model.User, error) {
 	user := &model.User{}
 	err := db.Get(user, sqlStr, username)
 	if err == sql.ErrNoRows {
-		return nil, errcode.ErrorUserNotExist
+		return nil, ErrorUserNotExist
 	}
 	if err != nil {
 		return nil, err

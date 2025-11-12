@@ -4,7 +4,6 @@ import (
 	"bluebell_backend/dao/mysql"
 	"bluebell_backend/model"
 	"bluebell_backend/pkg/crypto"
-	"bluebell_backend/pkg/errcode"
 	"bluebell_backend/pkg/jwt"
 	"bluebell_backend/pkg/snowflake"
 )
@@ -41,7 +40,7 @@ func Login(user *model.User) (string, error) {
 	}
 	// 比对密码
 	if err := crypto.CheckPassword(u.Password, user.Password); err != nil {
-		return "", errcode.ErrorInvalidPassword
+		return "", mysql.ErrorInvalidPassword
 	}
 	return jwt.GenToken(u.UserID, u.Username)
 }
