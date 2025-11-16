@@ -13,6 +13,7 @@ import (
 	"go.uber.org/zap"
 )
 
+
 func CreatePostHandler(c *gin.Context) {
 	p := new(model.Post)
 	if err := c.ShouldBindJSON(p); err != nil {
@@ -69,6 +70,31 @@ func GetPostHandler(c *gin.Context) {
 	if err != nil {
 		zap.L().Error("service.GetPostList() failed", zap.Error(err))
 		ResponseError(c, CodeServerBusy)
+	}
+	ResponseSuccess(c, data)
+}
+
+// 升级版：可按照时间或分数来获取帖子
+// 根据前端传来的参数动态获取列表
+// 1.获取参宿
+// 2.redis查询id列表
+// 3.去数据库查询对应信息
+func GetPostHandler2(c *gin.Context) {
+	p := &model.ParamPostList{
+		Page:  1,
+		Size:  10,
+		Order: model.OrderTime,
+	}
+	if err := c.ShouldBindQuery(p); err != nil {
+		zap.L().Error("GetPostHandler2 with invalid param", zap.Error(err))
+		ResponseError(c, CodeInvalidParam)
+		return
+	}
+	data, err := service.GetPostList2(p)
+	if err != nil {
+		zap.L().Error("service.GetPostList2 failed", zap.Error(err))
+		ResponseError(c, CodeServerBusy)
+		return
 	}
 	ResponseSuccess(c, data)
 }
