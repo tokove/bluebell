@@ -5,7 +5,7 @@ import (
 	_ "bluebell_backend/docs" // 千万不要忘了导入把你上一步生成的docs
 	"bluebell_backend/logger"
 	"bluebell_backend/middleware"
-	"time"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -17,9 +17,16 @@ func SetupRouter(mode string) *gin.Engine {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	r := gin.New()
-	r.Use(logger.GinLogger(), logger.GinRecovery(true), middleware.RateLimitMiddleware(2*time.Second, 1))
+	// r.Use(logger.GinLogger(), logger.GinRecovery(true), middleware.RateLimitMiddleware(2*time.Second, 1))
+	r.Use(logger.GinLogger(), logger.GinRecovery(true))
 
 	r.GET("/swagger/*any", gs.WrapHandler(swaggerFiles.Handler))
+
+	r.LoadHTMLFiles("./templates/index.html")
+	r.Static("./static", "./static")
+	r.GET("/", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.html", nil)
+	})
 
 	// ---------------------------------------------------------------------------------
 	v1 := r.Group("/api/v1")
