@@ -6,7 +6,9 @@ import (
 	"bluebell_backend/logger"
 	"bluebell_backend/middleware"
 	"net/http"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	gs "github.com/swaggo/gin-swagger"
@@ -17,6 +19,16 @@ func SetupRouter(mode string) *gin.Engine {
 		gin.SetMode(gin.ReleaseMode)
 	}
 	r := gin.New()
+
+	r.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"http://localhost:8080"},
+		AllowMethods:     []string{"GET", "POST", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
+	}))
+
 	// r.Use(logger.GinLogger(), logger.GinRecovery(true), middleware.RateLimitMiddleware(2*time.Second, 1))
 	r.Use(logger.GinLogger(), logger.GinRecovery(true))
 
